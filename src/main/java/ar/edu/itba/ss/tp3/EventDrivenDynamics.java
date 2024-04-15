@@ -103,10 +103,11 @@ public class EventDrivenDynamics {
         }
 
         for (int i = 0; i < eventCount; i++) {
-            System.out.println(collisions);
+//            System.out.println(collisions);
 
             // Get the first collision
             Collision firstCollision = collisions.pollFirst();
+            System.out.println(firstCollision.toString());
             if (firstCollision == null) {
                 throw new IllegalStateException();
             }
@@ -140,7 +141,11 @@ public class EventDrivenDynamics {
                     newVy = -1 * firstCollision.getParticle1().getVelocity() * Math.sin(firstCollision.getParticle1().getAngle());
                 }
                 final double newModulus = Math.sqrt(Math.pow(newVx, 2) + Math.pow(newVy, 2));
-                final double newAngle = Math.acos(newVx / newModulus);
+                System.out.println("Old angle:" + firstCollision.getParticle1().getAngle());
+                final double newAngle = Math.atan2(newVy, newVx);
+                System.out.println("newVx: " + newVx);
+                System.out.println("newVy: " + newVy);
+                System.out.println("newAngle: " + newAngle);
                 firstCollision.getParticle1().setVelocity(newModulus);
                 firstCollision.getParticle1().setAngle(newAngle);
             } else {
@@ -167,9 +172,9 @@ public class EventDrivenDynamics {
                 final double newVy2 = vy2 - jy / particle2.getMass();
 
                 final double newModulus1 = Math.sqrt(Math.pow(newVx1, 2) + Math.pow(newVy1, 2));
-                final double newAngle1 = Math.acos(newVx1 / newModulus1);
+                final double newAngle1 = Math.atan2(newVy1, newVx1);
                 final double newModulus2 = Math.sqrt(Math.pow(newVx2, 2) + Math.pow(newVy2, 2));
-                final double newAngle2 = Math.acos(newVx2 / newModulus2);
+                final double newAngle2 = Math.atan2(newVy2, newVx2);
 
                 particle1.setVelocity(newModulus1);
                 particle1.setAngle(newAngle1);
