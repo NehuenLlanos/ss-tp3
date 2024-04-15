@@ -2,7 +2,6 @@ package ar.edu.itba.ss.tp3;
 
 import ar.edu.itba.ss.cim.CellIndexMethod;
 import ar.edu.itba.ss.cim.Plane;
-import ar.edu.itba.ss.tp2.MovingParticle;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,7 +30,7 @@ public class Main {
         final int particleCount = Integer.parseInt(data.get(0)); // N
         final double planeLength = Double.parseDouble(data.get(1)); // L
         final double interactionRadius = Double.parseDouble(data.get(2)); // r_c
-        final int eventCount = Integer.parseInt(data.get(3)); // N
+        final int eventCount = Integer.parseInt(data.get(3)); // event_count
         final double particleRadius = Double.parseDouble(data.get(4)); // r_particles
         final double particleMass = Double.parseDouble(data.get(5)); // m_particles
         final double particleVelocity = Double.parseDouble(data.get(6)); //v_0_particles
@@ -77,9 +76,17 @@ public class Main {
         CellIndexMethod.Builder<HeavyMovingParticle> cimBuilder = CellIndexMethod.Builder.newBuilder();
         final CellIndexMethod<HeavyMovingParticle> cim = cimBuilder
                 .withInteractionRadius(interactionRadius)
+                .withOptimumMatrixCellCount()
                 .withPlane(planeBuilder.withLength(planeLength).build())
                 .build();
 
-        
+        EventDrivenDynamics eventDrivenDynamics = EventDrivenDynamics.Builder.newBuilder()
+                .withCim(cim)
+                .withObstacle(obstacle)
+                .withMovingObstacle(obstacleMoves)
+                .withEventCount(eventCount)
+                .build();
+
+        eventDrivenDynamics.execute("output.txt", "collisions.txt");
     }
 }
