@@ -103,11 +103,8 @@ public class EventDrivenDynamics {
         }
 
         for (int i = 0; i < eventCount; i++) {
-//            System.out.println(collisions);
-
             // Get the first collision
             Collision firstCollision = collisions.pollFirst();
-            System.out.println(firstCollision.toString());
             if (firstCollision == null) {
                 throw new IllegalStateException();
             }
@@ -141,11 +138,7 @@ public class EventDrivenDynamics {
                     newVy = -1 * firstCollision.getParticle1().getVelocity() * Math.sin(firstCollision.getParticle1().getAngle());
                 }
                 final double newModulus = Math.sqrt(Math.pow(newVx, 2) + Math.pow(newVy, 2));
-                System.out.println("Old angle:" + firstCollision.getParticle1().getAngle());
                 final double newAngle = Math.atan2(newVy, newVx);
-                System.out.println("newVx: " + newVx);
-                System.out.println("newVy: " + newVy);
-                System.out.println("newAngle: " + newAngle);
                 firstCollision.getParticle1().setVelocity(newModulus);
                 firstCollision.getParticle1().setAngle(newAngle);
             } else {
