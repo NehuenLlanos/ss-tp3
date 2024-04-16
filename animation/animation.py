@@ -1,5 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 from matplotlib.animation import FuncAnimation, FFMpegWriter
 import os.path
 
@@ -10,12 +11,15 @@ with(open(os.path.dirname(__file__) + '/../output.txt') as output_file,
     particle_count = int(input_data[0][:-1])
     time_count = int(input_data[3][:-1])
     plane_length = float(input_data[1][:-1])
+    particle_radius = float(input_data[4][:-1])
+    obstacle_radius = float(input_data[7][:-1])
 
     data = list(csv.reader(output_file, delimiter=" "))
 
     times = []
     for i in range(time_count):
         times.append(data[i * particle_count:(i + 1) * particle_count])
+    # print(times)
 
     fig, ax = plt.subplots()
 
@@ -25,11 +29,15 @@ with(open(os.path.dirname(__file__) + '/../output.txt') as output_file,
         ax.set_ylim(0, plane_length)
         ax.grid()
         ax.set_aspect('equal', adjustable='box')
+        ax.minorticks_on()
+        ax.tick_params(which = "minor", bottom = False, left = False)
 
         # Plot each particle
         for particle_data in times[i]:
-            x, y = float(particle_data[2]), float(particle_data[3])
-            ax.plot(x, y, 'ro')
+            if particle_data[1] == 'obstacle':
+                ax.add_patch(mpatches.Circle((float(particle_data[2]), float(particle_data[3])), obstacle_radius, color='b'))
+            else:
+                ax.add_patch(mpatches.Circle((float(particle_data[2]), float(particle_data[3])), particle_radius, color='r'))
 
         return ax
 
