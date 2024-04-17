@@ -161,7 +161,7 @@ public class EventDrivenDynamics {
                 boolean isWithObstacle = false;
                 HeavyMovingParticle particle1 = firstCollision.getParticle1();
                 HeavyMovingParticle particle2 = firstCollision.getParticle2();
-                if (particle1.equals(obstacle) || particle2.equals(obstacle)) {
+                if (!obstacleMoves && (particle1.equals(obstacle) || particle2.equals(obstacle))) {
                     isWithObstacle = true;
                     particle1 = particle1.equals(obstacle) ? particle2 : particle1;
                     particle2 = obstacle;

@@ -48,7 +48,7 @@ public class Main {
                 .withRadius(obstacleRadius)
                 .withMass(obstacleMass)
                 .withVelocity(obstacleVelocity)
-                .withAngle(getRandomAngle())
+                .withAngle(0)
                 .build();
 
         List<HeavyMovingParticle> particles = new ArrayList<>();
