@@ -79,7 +79,23 @@ public class EventDrivenDynamics {
 
         writeResults(statesFilename, collisionsFilename, null);
 
-        final TreeSet<Collision> collisions = new TreeSet<>(Comparator.comparing(Collision::getTime));
+        final TreeSet<Collision> collisions = new TreeSet<>((o1, o2) -> {
+            int result = Utils.compare(o1.getTime(), o2.getTime());
+            if (result == 0) {
+                result = o1.getParticle1().getIdentifier().compareTo(o2.getParticle1().getIdentifier());
+                if (result == 0) {
+                    if (o1.isWithWall() && o2.isWithWall()) {
+                        result = o1.getWall().name().compareTo(o2.getWall().name());
+                    } else if (!o1.isWithWall() && !o2.isWithWall()) {
+                        result = o1.getParticle2().getIdentifier().compareTo(o2.getParticle2().getIdentifier());
+                    } else {
+                        result = o1.isWithWall() ? -1 : 1;
+                    }
+
+                }
+            }
+            return result;
+        });
 
         // Calculate collision with walls
         for (HeavyMovingParticle particle : cim.getPlane().getParticles()) {
@@ -142,37 +158,54 @@ public class EventDrivenDynamics {
                 firstCollision.getParticle1().setVelocity(newModulus);
                 firstCollision.getParticle1().setAngle(newAngle);
             } else {
-                final HeavyMovingParticle particle1 = firstCollision.getParticle1();
-                final HeavyMovingParticle particle2 = firstCollision.getParticle2();
+                boolean isWithObstacle = false;
+                HeavyMovingParticle particle1 = firstCollision.getParticle1();
+                HeavyMovingParticle particle2 = firstCollision.getParticle2();
+                if (particle1.equals(obstacle) || particle2.equals(obstacle)) {
+                    isWithObstacle = true;
+                    particle1 = particle1.equals(obstacle) ? particle2 : particle1;
+                    particle2 = obstacle;
+                }
 
                 final double vx1 = particle1.getVelocity() * Math.cos(particle1.getAngle());
                 final double vy1 = particle1.getVelocity() * Math.sin(particle1.getAngle());
-                final double vx2 = particle2.getVelocity() * Math.cos(particle2.getAngle());
-                final double vy2 = particle2.getVelocity() * Math.sin(particle2.getAngle());
                 final double deltaX = particle2.getX() - particle1.getX();
                 final double deltaY = particle2.getY() - particle1.getY();
-                final double deltaVx = vx2 - vx1;
-                final double deltaVy = vy2 - vy1;
-                final double sigma = particle1.getRadius() + particle2.getRadius();
 
-                final double j = 2 * particle1.getMass() * particle2.getMass() * (deltaVx * deltaX + deltaVy * deltaY) / (sigma * (particle1.getMass() + particle2.getMass()));
-                final double jx = j * deltaX / sigma;
-                final double jy = j * deltaY / sigma;
+                if (isWithObstacle) {
+                    final double alpha = Math.atan2(deltaY, deltaX);
+                    final double newVx = (-1 * Math.pow(Math.cos(alpha), 2) + Math.pow(Math.sin(alpha), 2)) * vx1 + (-2 * Math.sin(alpha) * Math.cos(alpha)) * vy1;
+                    final double newVy = (-2 * Math.sin(alpha) * Math.cos(alpha)) * vx1 + (-1 * Math.sin(alpha) * Math.sin(alpha) + Math.cos(alpha) * Math.cos(alpha)) * vy1;
+                    final double newModulus = Math.sqrt(Math.pow(newVx, 2) + Math.pow(newVy, 2));
+                    final double newAngle = Math.atan2(newVy, newVx);
+                    particle1.setVelocity(newModulus);
+                    particle1.setAngle(newAngle);
+                } else {
+                    final double vx2 = particle2.getVelocity() * Math.cos(particle2.getAngle());
+                    final double vy2 = particle2.getVelocity() * Math.sin(particle2.getAngle());
+                    final double deltaVx = vx2 - vx1;
+                    final double deltaVy = vy2 - vy1;
+                    final double sigma = particle1.getRadius() + particle2.getRadius();
 
-                final double newVx1 = vx1 + jx / particle1.getMass();
-                final double newVy1 = vy1 + jy / particle1.getMass();
-                final double newVx2 = vx2 - jx / particle2.getMass();
-                final double newVy2 = vy2 - jy / particle2.getMass();
+                    final double j = 2 * particle1.getMass() * particle2.getMass() * (deltaVx * deltaX + deltaVy * deltaY) / (sigma * (particle1.getMass() + particle2.getMass()));
+                    final double jx = j * deltaX / sigma;
+                    final double jy = j * deltaY / sigma;
 
-                final double newModulus1 = Math.sqrt(Math.pow(newVx1, 2) + Math.pow(newVy1, 2));
-                final double newAngle1 = Math.atan2(newVy1, newVx1);
-                final double newModulus2 = Math.sqrt(Math.pow(newVx2, 2) + Math.pow(newVy2, 2));
-                final double newAngle2 = Math.atan2(newVy2, newVx2);
+                    final double newVx1 = vx1 + jx / particle1.getMass();
+                    final double newVy1 = vy1 + jy / particle1.getMass();
+                    final double newVx2 = vx2 - jx / particle2.getMass();
+                    final double newVy2 = vy2 - jy / particle2.getMass();
 
-                particle1.setVelocity(newModulus1);
-                particle1.setAngle(newAngle1);
-                particle2.setVelocity(newModulus2);
-                particle2.setAngle(newAngle2);
+                    final double newModulus1 = Math.sqrt(Math.pow(newVx1, 2) + Math.pow(newVy1, 2));
+                    final double newAngle1 = Math.atan2(newVy1, newVx1);
+                    final double newModulus2 = Math.sqrt(Math.pow(newVx2, 2) + Math.pow(newVy2, 2));
+                    final double newAngle2 = Math.atan2(newVy2, newVx2);
+
+                    particle1.setVelocity(newModulus1);
+                    particle1.setAngle(newAngle1);
+                    particle2.setVelocity(newModulus2);
+                    particle2.setAngle(newAngle2);
+                }
             }
 
             // Update collisions

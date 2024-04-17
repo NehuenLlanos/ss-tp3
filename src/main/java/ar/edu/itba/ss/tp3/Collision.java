@@ -54,13 +54,13 @@ public class Collision {
         final double vy = particle.getVelocity() * Math.sin(particle.getAngle());
         Double time = null;
 
-        if (wall == Wall.LEFT && Double.compare(vx, 0) < 0) {
+        if (wall == Wall.LEFT && Utils.compare(vx, 0d) < 0) {
             time = (0 + particle.getRadius() - particle.getX()) / vx;
-        } else if (wall == Wall.RIGHT && Double.compare(vx, 0) > 0) {
+        } else if (wall == Wall.RIGHT && Utils.compare(vx, 0) > 0) {
             time = (planeLength - particle.getRadius() - particle.getX()) / vx;
-        } else if (wall == Wall.BOTTOM && Double.compare(vy, 0) < 0) {
+        } else if (wall == Wall.BOTTOM && Utils.compare(vy, 0) < 0) {
             time = (0 + particle.getRadius() - particle.getY()) / vy;
-        } else if (wall == Wall.TOP && Double.compare(vy, 0) > 0){
+        } else if (wall == Wall.TOP && Utils.compare(vy, 0) > 0){
             time = (planeLength - particle.getRadius() - particle.getY()) / vy;
         }
 

@@ -26,7 +26,7 @@ public class HeavyMovingParticle extends MovingParticle {
 
         HeavyMovingParticle that = (HeavyMovingParticle) o;
 
-        return Double.compare(mass, that.mass) == 0;
+        return Utils.compare(mass, that.mass) == 0;
     }
 
     @Override

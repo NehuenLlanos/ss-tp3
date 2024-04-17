@@ -4,11 +4,10 @@ import matplotlib.patches as mpatches
 from matplotlib.animation import FuncAnimation, FFMpegWriter
 import os.path
 
-with(open(os.path.dirname(__file__) + '/../output.txt') as output_file,
-    open(os.path.dirname(__file__) + '/../input.txt') as input_file):
-
+with (open(os.path.dirname(__file__) + '/../output.txt') as output_file,
+     open(os.path.dirname(__file__) + '/../input.txt') as input_file):
     input_data = input_file.readlines()
-    particle_count = int(input_data[0][:-1])
+    particle_count = int(input_data[0][:-1]) + 1
     time_count = int(input_data[3][:-1])
     plane_length = float(input_data[1][:-1])
     particle_radius = float(input_data[4][:-1])
@@ -30,15 +29,17 @@ with(open(os.path.dirname(__file__) + '/../output.txt') as output_file,
         ax.grid()
         ax.set_aspect('equal', adjustable='box')
         ax.minorticks_on()
-        ax.tick_params(which = "minor", bottom = False, left = False)
+        ax.tick_params(which="minor", bottom=False, left=False)
 
         # Plot each particle
         for particle_data in times[i]:
             if particle_data[1] == 'obstacle':
-                ax.add_patch(mpatches.Circle((float(particle_data[2]), float(particle_data[3])), obstacle_radius, color='b'))
+                ax.add_patch(
+                    mpatches.Circle((float(particle_data[2]), float(particle_data[3])), obstacle_radius, color='b'))
             else:
-                ax.add_patch(mpatches.Circle((float(particle_data[2]), float(particle_data[3])), particle_radius, color='r'))
-
+                ax.add_patch(
+                    mpatches.Circle((float(particle_data[2]), float(particle_data[3])), particle_radius, color='r'))
+            ax.annotate(f"{particle_data[1]} - {particle_data[0]}", (float(particle_data[2]), float(particle_data[3])))
         return ax
 
     # Create the animation
