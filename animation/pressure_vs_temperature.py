@@ -2,6 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 import numpy as np
 import os.path
+import matplotlib.ticker as ticker
 
 
 DELTA_T = 3.14*10**(-3)
@@ -88,10 +89,10 @@ with (open(os.path.dirname(__file__) + '/../output_1ms.txt') as output_file_1ms,
                         if i == 3:
                             wall_collisions_10ms[index] = wall_collisions_10ms[index] + [(float(particle[4]), float(particle[5]), other_object)]
 
-    total_pressure_1ms = 0
-    total_pressure_3ms = 0
-    total_pressure_6ms = 0
-    total_pressure_10ms = 0
+    total_pressure_1ms = []
+    total_pressure_3ms = []
+    total_pressure_6ms = []
+    total_pressure_10ms = []
 
     for key in wall_collisions_1ms.keys():
         delta_normal_velocities = []
@@ -100,7 +101,7 @@ with (open(os.path.dirname(__file__) + '/../output_1ms.txt') as output_file_1ms,
                 delta_normal_velocities.append(abs(modulus * np.sin(angle) * 2))
             elif wall == "LEFT" or wall == "RIGHT":
                 delta_normal_velocities.append(abs(modulus * np.cos(angle) * 2))
-        total_pressure_1ms += np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length)
+        total_pressure_1ms.append(np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length))
 
     for key in wall_collisions_3ms.keys():
         delta_normal_velocities = []
@@ -109,7 +110,7 @@ with (open(os.path.dirname(__file__) + '/../output_1ms.txt') as output_file_1ms,
                 delta_normal_velocities.append(abs(modulus * np.sin(angle) * 2))
             elif wall == "LEFT" or wall == "RIGHT":
                 delta_normal_velocities.append(abs(modulus * np.cos(angle) * 2))
-        total_pressure_3ms += np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length)
+        total_pressure_3ms.append(np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length))
 
     for key in wall_collisions_6ms.keys():
         delta_normal_velocities = []
@@ -118,7 +119,7 @@ with (open(os.path.dirname(__file__) + '/../output_1ms.txt') as output_file_1ms,
                 delta_normal_velocities.append(abs(modulus * np.sin(angle) * 2))
             elif wall == "LEFT" or wall == "RIGHT":
                 delta_normal_velocities.append(abs(modulus * np.cos(angle) * 2))
-        total_pressure_6ms += np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length)
+        total_pressure_6ms.append(np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length))
 
     for key in wall_collisions_10ms.keys():
         delta_normal_velocities = []
@@ -127,29 +128,29 @@ with (open(os.path.dirname(__file__) + '/../output_1ms.txt') as output_file_1ms,
                 delta_normal_velocities.append(abs(modulus * np.sin(angle) * 2))
             elif wall == "LEFT" or wall == "RIGHT":
                 delta_normal_velocities.append(abs(modulus * np.cos(angle) * 2))
-        total_pressure_10ms += np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length)
-
-    average_pressure = []
-    average_pressure.append(total_pressure_1ms / len(wall_collisions_1ms.keys()))
-    average_pressure.append(total_pressure_3ms / len(wall_collisions_3ms.keys()))
-    average_pressure.append(total_pressure_6ms / len(wall_collisions_6ms.keys()))
-    average_pressure.append(total_pressure_10ms / len(wall_collisions_10ms.keys()))
+        total_pressure_10ms.append(np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length))
 
     plt.rcParams.update({'font.size': 20})
     fig, ax = plt.subplots()
+    formatter = ticker.ScalarFormatter()
+    formatter.set_scientific(False)
+    ax.yaxis.set_major_formatter(formatter)
+
+    total_pressures = []
+    total_pressures.append([np.average(total_pressure_1ms), np.std(total_pressure_1ms, ddof=1)])
+    total_pressures.append([np.average(total_pressure_3ms), np.std(total_pressure_3ms, ddof=1)])
+    total_pressures.append([np.average(total_pressure_6ms), np.std(total_pressure_6ms, ddof=1)])
+    total_pressures.append([np.average(total_pressure_10ms), np.std(total_pressure_10ms, ddof=1)])
 
     for i in range(len(velocity)):
-        print(average_pressure[i])
-        ax.scatter(velocity[i]**2, average_pressure[i], color='r')
+        color = 'blue'
+        ax.scatter(velocity[i]**2, total_pressures[i][0], color=color)
+        ax.errorbar(velocity[i]**2, total_pressures[i][0], yerr=total_pressures[i][1], fmt='o', capsize=5, color=color)
+        if i != 0:
+            ax.plot([velocity[i-1]**2, velocity[i]**2], [total_pressures[i-1][0], total_pressures[i][0]], color=color)
 
-    # 18793.297305781307
-    # 168542.2319809217
-    # 670360.5433907274
-    # 1820482.084769094
-
+    ax.title.set_text("Presión en función de la temperatura")
     ax.set_xlabel("Temperatura", fontdict={"weight": "bold"})
     ax.set_ylabel("Presión [alguna unidad]", fontdict={"weight": "bold"})
 
-
-    # Display the animation
     plt.show()
