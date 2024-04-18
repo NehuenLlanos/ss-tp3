@@ -8,8 +8,8 @@ DELTA_T = 3.14*10**(-3)
 WALL_COLLISIONS = ("TOP", "BOTTOM", "LEFT", "RIGHT")
 
 
-with (open(os.path.dirname(__file__) + '/../output.txt') as output_file,
-      open(os.path.dirname(__file__) + '/../collisions.txt') as collisions_file,
+with (open(os.path.dirname(__file__) + '/../output_1_1.txt') as output_file,
+      open(os.path.dirname(__file__) + '/../collisions_1_1.txt') as collisions_file,
       open(os.path.dirname(__file__) + '/../input.txt') as input_file):
     input_data = input_file.readlines()
     particle_count = int(input_data[0][:-1]) + 1
@@ -70,8 +70,8 @@ with (open(os.path.dirname(__file__) + '/../output.txt') as output_file,
         ys.append(np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length))
 
     line_walls, = ax.plot(xs, ys, linewidth=2.0, label="Presión de paredes")
-    ax.set_xlabel("Tiempo [s]", fontdict={"weight": "bold"})
-    ax.set_ylabel("Presión [alguna unidad]", fontdict={"weight": "bold"})
+    ax.set_xlabel("Tiempo  $\\left(s\\right)$", fontdict={"weight": "bold"})
+    ax.set_ylabel("Presión  $\\left(Pa\\right)$", fontdict={"weight": "bold"})
     ax.legend(handles=[line_walls])
 
     # Display the animation

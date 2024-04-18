@@ -19,7 +19,7 @@ with open(os.path.dirname(__file__) + f'/../../{FILE}_collisions.txt') as collis
     print(len(xs), len(collisions))
     ax.plot(xs, collisions, linewidth=2.0)
 
-    ax.set_xlabel("Tiempo (s)", fontdict={"weight": "bold"})
+    ax.set_xlabel("Tiempo $\\left(s\\right)$", fontdict={"weight": "bold"})
     ax.set_ylabel("Cantidad de colisiones con obstáculo", fontdict={"weight": "bold"})
     # Display the animation
     plt.show()
