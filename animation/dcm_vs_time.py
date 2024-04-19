@@ -1,66 +1,85 @@
 import csv
 import matplotlib.pyplot as plt
-import numpy as np
 import os.path
 import matplotlib.ticker as ticker
 
-DELTA_T = 3.14*10**(-3)
+RUNS = 2
+VEL = 1
+EVENT_COUNT = 20000
 
-with (open(os.path.dirname(__file__) + '/../output.txt') as output_file,
-      open(os.path.dirname(__file__) + '/../collisions.txt') as collisions_file,
-      open(os.path.dirname(__file__) + '/../input.txt') as input_file):
-    input_data = input_file.readlines()
-    particle_count = int(input_data[0][:-1]) + 1
-    event_count = int(input_data[3][:-1])
-    plane_length = float(input_data[1][:-1])
-    particle_radius = float(input_data[4][:-1])
-    obstacle_radius = float(input_data[7][:-1])
+output_files = {}
 
-    events_data = list(csv.reader(output_file, delimiter=" "))
-    collisions_data = list(csv.reader(collisions_file, delimiter=" "))
+output_files[0] = open(os.path.dirname(__file__) + '/../output_1ms_run1.txt')
+output_files[1] = open(os.path.dirname(__file__) + '/../output_1ms_run2.txt')
+output_files[2] = open(os.path.dirname(__file__) + '/../output_1ms_run3.txt')
+output_files[3] = open(os.path.dirname(__file__) + '/../output_1ms_run4.txt')
+output_files[4] = open(os.path.dirname(__file__) + '/../output_1ms_run5.txt')
+# output_files[5] = open(os.path.dirname(__file__) + '/../output_1ms_run6.txt')
+# output_files[6] = open(os.path.dirname(__file__) + '/../output_1ms_run7.txt')
+# output_files[7] = open(os.path.dirname(__file__) + '/../output_1ms_run8.txt')
+# output_files[8] = open(os.path.dirname(__file__) + '/../output_1ms_run9.txt')
+# output_files[9] = open(os.path.dirname(__file__) + '/../output_1ms_run10.txt')
+# output_files[10] = open(os.path.dirname(__file__) + '/../output_1ms_run11.txt')
+print("Termine")
 
-    events = []
-    for i in range(event_count):
-        events.append(events_data[i * particle_count:(i + 1) * particle_count])
+input_file = open(os.path.dirname(__file__) + '/../input.txt')
 
-    displacements = {}
-    previous_obstacle_x = 0;
-    previous_obstacle_y = 0;
-    for i in range(event_count):
-        collision_time = float(collisions_data[i][0])
-        if i == 0:
-            previous_obstacle_x = float(events[i][0][2])
-            previous_obstacle_y = float(events[i][0][3])
-        else:
-            index = int(collision_time // DELTA_T)
-            if index not in displacements:
-                displacements[index] = []
+input_data = input_file.readlines()
+particle_count = int(input_data[0][:-1]) + 1
+event_count = int(input_data[3][:-1])
+plane_length = float(input_data[1][:-1])
+particle_radius = float(input_data[4][:-1])
+obstacle_radius = float(input_data[7][:-1])
 
-            for particle in events[i]:
-                if particle[1] == 'obstacle':
-                    current_obstacle_x = float(particle[2])
-                    current_obstacle_y = float(particle[3])
-                    displacement = np.sqrt((current_obstacle_x - previous_obstacle_x)**2 + (current_obstacle_y - previous_obstacle_y)**2)
-                    displacements[index] = displacements[index] + [displacement]
-                    previous_obstacle_x = current_obstacle_x
-                    previous_obstacle_y = current_obstacle_y
+events_data = {}
+for i in range(RUNS):
+    if i not in events_data:
+        events_data[i] = []
+    events_data[i] = list(csv.reader(output_files[i], delimiter=" "))
 
-    plt.rcParams.update({'font.size': 20})
-    fig, ax = plt.subplots()
-    xs = []
-    ys = []
-    errors = []
+print("Termine de leer los archivos")
 
-    for key in displacements.keys():
-        xs.append(key * DELTA_T)
-        ys.append(np.sum(displacements.get(key)) / displacements.get(key).__len__())
+events = {}
+for i in range(RUNS):
+    for j in range(EVENT_COUNT):
+        if i not in events:
+            events[i] = []
+        events[i].append(events_data[i][j * particle_count:(j + 1) * particle_count])
 
-    ax.plot(xs, ys, linewidth=2.0, label="DCM por DELTA T")
-    formatter = ticker.ScalarFormatter()
-    formatter.set_scientific(False)
-    ax.yaxis.set_major_formatter(formatter)
-    ax.set_xlabel("Tiempo [s]", fontdict={"weight": "bold"})
-    ax.set_ylabel("Desplazamiento Cuadrático Medio", fontdict={"weight": "bold"})
+print("Termine de leer los eventos")
 
-    # Display the animation
-    plt.show()
+displacements = {}
+times = {}
+for i in range(RUNS):
+    for j in range(EVENT_COUNT):
+        if i not in displacements:
+            displacements[i] = []
+        if i not in times:
+            times[i] = []
+        displacements[i].append((float(events[i][j][0][2]) - 0.05)**2 + (float(events[i][j][0][3]) - 0.05)**2)
+        times[i].append(float(events[i][j][0][0]))
+
+plt.rcParams.update({'font.size': 20})
+fig, ax = plt.subplots()
+errors = []
+
+ax.plot(times[0], displacements[0], linewidth=2.0)
+ax.plot(times[1], displacements[1], linewidth=2.0)
+
+medium_displacement = [0] * EVENT_COUNT
+for i in range(EVENT_COUNT):
+    for j in range(RUNS):
+        medium_displacement[i] += displacements[j][i]
+    medium_displacement[i] /= RUNS
+
+ax.plot(times[0], medium_displacement, linewidth=2.0)
+
+
+formatter = ticker.ScalarFormatter()
+formatter.set_scientific(False)
+ax.yaxis.set_major_formatter(formatter)
+ax.set_xlabel("Tiempo (s)", fontdict={"weight": "bold"})
+ax.set_ylabel("Desplazamiento Cuadrático (m)", fontdict={"weight": "bold"})
+
+# Display the animation
+plt.show()
