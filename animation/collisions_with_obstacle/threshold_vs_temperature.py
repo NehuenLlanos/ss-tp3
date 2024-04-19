@@ -38,7 +38,6 @@ with (open(os.path.dirname(__file__) + "/../../input.txt") as input_file):
         ys.append(np.average(times))
         errors.append(np.std(times, ddof=1))
 
-    ax.plot(xs, ys, color="tab:blue", linestyle="--")
     ax.errorbar(xs, ys, yerr=errors, fmt='o', capsize=5, color="tab:blue")
 
     ax.set_xlabel("Temperatura $\\left(\\frac{m^2}{s^2}\\right)$", fontdict={"weight": "bold"})
