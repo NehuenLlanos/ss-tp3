@@ -29,7 +29,7 @@ with (open(os.path.dirname(__file__) + "/../../input.txt") as input_file):
                 collisions[i] = int(collisions[i][:-1])
             files[k].close()
 
-        for i in range(len(collisions)):
+            for i in range(len(collisions)):
                 if collisions[i] >= particle_threshold:
                     times.append(i * DELTA_T)
                     break
@@ -38,7 +38,8 @@ with (open(os.path.dirname(__file__) + "/../../input.txt") as input_file):
         ys.append(np.average(times))
         errors.append(np.std(times, ddof=1))
 
-    ax.errorbar(xs, ys, yerr=errors, fmt='o', capsize=5)
+    ax.plot(xs, ys, color="tab:blue", linestyle="--")
+    ax.errorbar(xs, ys, yerr=errors, fmt='o', capsize=5, color="tab:blue")
 
     ax.set_xlabel("Temperatura $\\left(\\frac{m^2}{s^2}\\right)$", fontdict={"weight": "bold"})
     ax.set_ylabel(f"Tiempo / {round(PERCENTAGE)}% de partículas chocan c/ obstáculo $\\left(s\\right)$", fontdict={"weight": "bold"})

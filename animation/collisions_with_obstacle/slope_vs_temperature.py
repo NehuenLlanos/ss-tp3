@@ -40,7 +40,8 @@ for v in velocities:
     ys.append(np.average(slopes))
     errors.append(np.std(slopes, ddof=1))
 
-ax.errorbar(xs, ys, yerr=errors, fmt='o', capsize=5)
+ax.plot(xs, ys, color="tab:blue", linestyle="--")
+ax.errorbar(xs, ys, yerr=errors, fmt='o', capsize=5, color="tab:blue")
 
 ax.set_xlabel("Temperatura $\\left(\\frac{m^2}{s^2}\\right)$", fontdict={"weight": "bold"})
 ax.set_ylabel("Número de visitas por unidad de tiempo", fontdict={"weight": "bold"})
