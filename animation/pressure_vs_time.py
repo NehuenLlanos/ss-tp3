@@ -4,7 +4,7 @@ import numpy as np
 import os.path
 
 
-DELTA_T = 3.14*10**(-3)
+DELTA_T = 3.14*10**(-3) * 2
 WALL_COLLISIONS = ("TOP", "BOTTOM", "LEFT", "RIGHT")
 
 
@@ -50,16 +50,17 @@ with (open(os.path.dirname(__file__) + '/../output_1_1.txt') as output_file,
             desired_object = collision_object_2 if collision_object_1 == "obstacle" else collision_object_1
             for particle in events[i]:
                 if particle[1] == desired_object:
-                    obstacle_collisions[index] = obstacle_collisions[index] + [(float(particle[4]), float(particle[5]))]
+                    obstacle_collisions[index] = obstacle_collisions[index] + [(float(particle[2]), float(particle[3]), float(particle[4]), float(particle[5]))]
 
     plt.rcParams.update({'font.size': 20})
     fig, ax = plt.subplots()
-    xs = []
-    ys = []
-    errors = []
+    xs_walls = []
+    ys_walls = []
+    xs_obstacle = []
+    ys_obstacle = []
 
     for key in wall_collisions.keys():
-        xs.append(key * DELTA_T)
+        xs_walls.append(key * DELTA_T)
         delta_normal_velocities = []
         for modulus, angle, wall in wall_collisions.get(key):
             if wall == "TOP" or wall == "BOTTOM":
@@ -67,12 +68,22 @@ with (open(os.path.dirname(__file__) + '/../output_1_1.txt') as output_file,
             elif wall == "LEFT" or wall == "RIGHT":
                 delta_normal_velocities.append(abs(modulus * np.cos(angle) * 2))
 
-        ys.append(np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length))
+        ys_walls.append(np.sum(delta_normal_velocities) / (DELTA_T * 4 * plane_length))
 
-    line_walls, = ax.plot(xs, ys, linewidth=2.0, label="Presión de paredes")
+    for key in obstacle_collisions.keys():
+        xs_obstacle.append(key * DELTA_T)
+        delta_normal_velocities = []
+        for x, y, modulus, angle in obstacle_collisions.get(key):
+            alpha = np.arctan2(plane_length / 2 - y, plane_length / 2 - x)
+            delta_normal_velocities.append(abs(modulus * np.cos(alpha) * 2))
+
+        ys_obstacle.append(np.sum(delta_normal_velocities) / (DELTA_T * 2 * np.pi * obstacle_radius))
+
+    line_walls, = ax.plot(xs_walls, ys_walls, linewidth=2.0, label="Presión de paredes")
+    line_obstacle, = ax.plot(xs_obstacle, ys_obstacle, linewidth=2.0, label="Presión de obstáculo")
     ax.set_xlabel("Tiempo  $\\left(s\\right)$", fontdict={"weight": "bold"})
-    ax.set_ylabel("Presión  $\\left(Pa\\right)$", fontdict={"weight": "bold"})
-    ax.legend(handles=[line_walls])
+    ax.set_ylabel("Presión  $\\left(Pa \\cdot m\\right)$", fontdict={"weight": "bold"})
+    ax.legend(handles=[line_walls, line_obstacle])
 
     # Display the animation
     plt.show()
