@@ -66,13 +66,13 @@ errors = []
 ax.plot(times[0], displacements[0], linewidth=2.0)
 ax.plot(times[1], displacements[1], linewidth=2.0)
 
-medium_displacement = [0] * EVENT_COUNT
-for i in range(EVENT_COUNT):
-    for j in range(RUNS):
-        medium_displacement[i] += displacements[j][i]
-    medium_displacement[i] /= RUNS
-
-ax.plot(times[0], medium_displacement, linewidth=2.0)
+# medium_displacement = [0] * EVENT_COUNT
+# for i in range(EVENT_COUNT):
+#     for j in range(RUNS):
+#         medium_displacement[i] += displacements[j][i]
+#     medium_displacement[i] /= RUNS
+#
+# ax.plot(times[0], medium_displacement, linewidth=2.0)
 
 
 formatter = ticker.ScalarFormatter()
