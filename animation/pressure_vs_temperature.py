@@ -149,8 +149,7 @@ with (open(os.path.dirname(__file__) + '/../output_1ms.txt') as output_file_1ms,
         if i != 0:
             ax.plot([velocity[i-1]**2, velocity[i]**2], [total_pressures[i-1][0], total_pressures[i][0]], color=color)
 
-    ax.title.set_text("Presión en función de la temperatura")
-    ax.set_xlabel("Temperatura", fontdict={"weight": "bold"})
-    ax.set_ylabel("Presión [alguna unidad]", fontdict={"weight": "bold"})
+    ax.set_xlabel("Temperatura $\\left(\\frac{m^2}{s^2}\\right)$", fontdict={"weight": "bold"})
+    ax.set_ylabel("Presión $\\left(Pa\\right)$", fontdict={"weight": "bold"})
 
     plt.show()
