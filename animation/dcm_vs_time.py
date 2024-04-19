@@ -4,17 +4,17 @@ import os.path
 import numpy as np
 import matplotlib.ticker as ticker
 
-RUNS = 3
+RUNS = 2
 VEL = 1
 EVENT_COUNT = 4847
 DELTA_T = 0.0015
 output_files = {}
 
-output_files[0] = open(os.path.dirname(__file__) + '/../output_1ms_run1.txt')
-output_files[1] = open(os.path.dirname(__file__) + '/../output_1ms_run2.txt')
-output_files[2] = open(os.path.dirname(__file__) + '/../output_1ms_run3.txt')
-output_files[3] = open(os.path.dirname(__file__) + '/../output_1ms_run4.txt')
-output_files[4] = open(os.path.dirname(__file__) + '/../output_1ms_run5.txt')
+output_files[0] = open(os.path.dirname(__file__) + '/../output_1_1.txt')
+output_files[1] = open(os.path.dirname(__file__) + '/../output_1_2.txt')
+# output_files[2] = open(os.path.dirname(__file__) + '/../output_1ms_run3.txt')
+# output_files[3] = open(os.path.dirname(__file__) + '/../output_1ms_run4.txt')
+# output_files[4] = open(os.path.dirname(__file__) + '/../output_1ms_run5.txt')
 # output_files[5] = open(os.path.dirname(__file__) + '/../output_1ms_run6.txt')
 # output_files[6] = open(os.path.dirname(__file__) + '/../output_1ms_run7.txt')
 # output_files[7] = open(os.path.dirname(__file__) + '/../output_1ms_run8.txt')
@@ -60,8 +60,6 @@ for i in range(RUNS):
 
 plt.rcParams.update({'font.size': 20})
 fig, ax = plt.subplots()
-errors = []
-
 
 displacements_normalized = {}
 for i in range(RUNS):
@@ -74,16 +72,17 @@ for i in range(RUNS):
         if previous_index < current_index:
             displacements_normalized[i].append(displacements[i][j][0])
         previous_index = current_index
+        j += 1
 
 xs = np.arange(0, 0.15, DELTA_T)
-dcm = [0 for in range(100)]
+dcm = [0 for _ in range(100)]
 for i in range(100):
     dcm[i] = [displacements_normalized[x][i] for x in range(RUNS)]
 
 for i in range(100):
     dcm[i] = np.average(dcm[i])
 
-ax.plot(xs, dcm, linewidth=2.0)
+ax.errorbar(xs, dcm, yerr=0, fmt='o', capsize=5)
 
 formatter = ticker.ScalarFormatter()
 formatter.set_scientific(False)
