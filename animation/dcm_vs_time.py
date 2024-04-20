@@ -111,7 +111,7 @@ for VEL, TIME_LIMIT, DELTA_T, COLOR in zip(VELOCITIES, TIME_LIMITS, DELTA_TS, CO
 diffusion_coefficient_file.close()
 ax.ticklabel_format(axis="y", style="sci", useMathText=True)
 ax.set_xlabel("Tiempo $(s)$", fontdict={"weight": "bold"})
-ax.set_ylabel("Desplazamiento Cuadrático Medio $(m)$", fontdict={"weight": "bold"})
+ax.set_ylabel("Desplazamiento Cuadrático Medio $(m^2)$", fontdict={"weight": "bold"})
 ax.legend(handles=labels)
 
 # Display the animation

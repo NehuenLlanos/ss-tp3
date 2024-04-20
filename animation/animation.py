@@ -4,7 +4,7 @@ import matplotlib.patches as mpatches
 from matplotlib.animation import FuncAnimation, FFMpegWriter
 import os.path
 
-with (open(os.path.dirname(__file__) + '/../output.txt') as output_file,
+with (open(os.path.dirname(__file__) + '/../output_1_1.txt') as output_file,
      open(os.path.dirname(__file__) + '/../input.txt') as input_file):
     input_data = input_file.readlines()
     particle_count = int(input_data[0][:-1]) + 1
@@ -18,7 +18,6 @@ with (open(os.path.dirname(__file__) + '/../output.txt') as output_file,
     times = []
     for i in range(time_count):
         times.append(data[i * particle_count:(i + 1) * particle_count])
-    # print(times)
 
     fig, ax = plt.subplots()
 
@@ -26,10 +25,7 @@ with (open(os.path.dirname(__file__) + '/../output.txt') as output_file,
         ax.clear()
         ax.set_xlim(0, plane_length)
         ax.set_ylim(0, plane_length)
-        ax.grid()
         ax.set_aspect('equal', adjustable='box')
-        ax.minorticks_on()
-        ax.tick_params(which="minor", bottom=False, left=False)
 
         # Plot each particle
         for particle_data in times[i]:
@@ -39,11 +35,11 @@ with (open(os.path.dirname(__file__) + '/../output.txt') as output_file,
             else:
                 ax.add_patch(
                     mpatches.Circle((float(particle_data[2]), float(particle_data[3])), particle_radius, color='r'))
-            ax.annotate(f"{particle_data[1]} - {particle_data[0]}", (float(particle_data[2]), float(particle_data[3])))
+            # ax.annotate(f"{particle_data[1]} - {particle_data[0]}", (float(particle_data[2]), float(particle_data[3])))
         return ax
 
     # Create the animation
-    ani = FuncAnimation(fig, update, frames=time_count, blit=False)
+    ani = FuncAnimation(fig, update, frames=time_count, blit=False, interval=50)
     # Display the animation
     # plt.show()
     # Save the animation

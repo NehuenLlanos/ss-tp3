@@ -42,7 +42,7 @@ for v in velocities:
 
 ax.errorbar(xs, ys, yerr=errors, fmt='o', capsize=5, color="tab:blue")
 
-ax.set_xlabel("Temperatura $\\left(\\frac{m^2}{s^2}\\right)$", fontdict={"weight": "bold"})
+ax.set_xlabel("Temperatura $\\left( U.A. \\right)$", fontdict={"weight": "bold"})
 ax.set_ylabel("Número de visitas por unidad de tiempo", fontdict={"weight": "bold"})
 
 # Display the animation

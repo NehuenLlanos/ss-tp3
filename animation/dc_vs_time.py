@@ -53,7 +53,7 @@ for i in range(RUNS):
 
 ax.ticklabel_format(axis="y", style="sci", useMathText=True)
 ax.set_xlabel("Tiempo $(s)$", fontdict={"weight": "bold"})
-ax.set_ylabel("Desplazamiento Cuadrático $(m)$", fontdict={"weight": "bold"})
+ax.set_ylabel("Desplazamiento Cuadrático $(m^2)$", fontdict={"weight": "bold"})
 
 # Display the animation
 plt.show()

@@ -85,5 +85,7 @@ with (open(os.path.dirname(__file__) + '/../output_1_1.txt') as output_file,
     ax.set_ylabel("Presión  $\\left(Pa \\cdot m\\right)$", fontdict={"weight": "bold"})
     ax.legend(handles=[line_walls, line_obstacle])
 
+    ax.ticklabel_format(axis="y", style="sci", useMathText=True)
+
     # Display the animation
     plt.show()

@@ -40,7 +40,7 @@ with (open(os.path.dirname(__file__) + "/../../input.txt") as input_file):
 
     ax.errorbar(xs, ys, yerr=errors, fmt='o', capsize=5, color="tab:blue")
 
-    ax.set_xlabel("Temperatura $\\left(\\frac{m^2}{s^2}\\right)$", fontdict={"weight": "bold"})
+    ax.set_xlabel("Temperatura $\\left( U.A. \\right)$", fontdict={"weight": "bold"})
     ax.set_ylabel(f"Tiempo / {round(PERCENTAGE)}% de partículas chocan c/ obstáculo $\\left(s\\right)$", fontdict={"weight": "bold"})
 
     # Display the animation
