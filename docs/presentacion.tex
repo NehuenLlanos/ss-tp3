@@ -272,14 +272,14 @@
 
     \section{Resultados}
 
-        \subsection{Parámetro de orden $v_a$}
+        \subsection{Animaciones}
 
-            \begin{frame}{Parámetro de orden $v_a$}{Animación}
+            \begin{frame}{Sistema con $v=1m/s$}{Animación}
                 \begin{minipage}[t]{0.60\textwidth}
                     \begin{figure}[H!]
                         \includegraphics[height=.65\textheight]{./animation-n300-eta0p6-frame}
                         \caption*{Véase la animación completa en \url{https://youtu.be/q8ep24AgTzU}.}
-                        \label{fig:va_1}
+                        \label{fig:a_1}
                     \end{figure}
                 \end{minipage}
                 \hfill
@@ -287,54 +287,51 @@
                     \begin{block}{Datos del sistema}
                         \begin{itemize}
                             \item $N=300$
-                            \item $L=5$
-                            \item $\eta=0.6$
+                            \item $E=20.000$
                         \end{itemize}
                     \end{block}
                 \end{minipage}
             \end{frame}
 
-            \begin{frame}{Parámetro de orden $v_a$}{Animación}
-                \begin{minipage}[t]{0.60\textwidth}
+            \begin{frame}{Sistema con $v \in \{ 3, 6, 10\}m/s$}{Animación}
+                \begin{minipage}[t]{0.3\textwidth}
                     \begin{figure}[H!]
                         \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
                         \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
-                        \label{fig:va_2}
+                        \label{fig:a_3}
                     \end{figure}
+                    \begin{beamercolorbox}[sep=5pt,center]{block body}
+                        \centering
+                        \small{$v=3m/s$}
+                    \end{beamercolorbox}
                 \end{minipage}
                 \hfill
                 \begin{minipage}[t]{0.30\textwidth}
-                    \begin{block}{Datos del sistema}
-                        \begin{itemize}
-                            \item $N=300$
-                            \item $L=5$
-                            \item $\eta=2.4$
-                        \end{itemize}
-                    \end{block}
-                \end{minipage}
-            \end{frame}
-
-            \begin{frame}{Parámetro de orden $v_a$}{Animación}
-                \begin{minipage}[t]{0.60\textwidth}
                     \begin{figure}[H!]
-                        \includegraphics[height=.65\textheight]{./animation-n300-eta5p2-frame}
-                        \caption*{Véase la animación completa en \url{https://youtu.be/QkXskl_8CGs}.}
-                        \label{fig:va_3}
+                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
+                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
+                        \label{fig:a_6}
                     \end{figure}
+                    \begin{beamercolorbox}[sep=5pt,center]{block body}
+                        \centering
+                        \small{$v=6m/s$}
+                    \end{beamercolorbox}
                 \end{minipage}
                 \hfill
                 \begin{minipage}[t]{0.30\textwidth}
-                    \begin{block}{Datos del sistema}
-                        \begin{itemize}
-                            \item $N=300$
-                            \item $L=5$
-                            \item $\eta=5.2$
-                        \end{itemize}
-                    \end{block}
+                    \begin{figure}[H!]
+                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
+                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
+                        \label{fig:a_10}
+                    \end{figure}
+                    \begin{beamercolorbox}[sep=5pt,center]{block body}
+                        \centering
+                        \small{$v=10m/s$}
+                    \end{beamercolorbox}
                 \end{minipage}
             \end{frame}
 
-            \begin{frame}{Parámetro de orden $v_a$}{$v_a$ en función del tiempo}
+            \begin{frame}{Presión vs Tiempo con $v=1m/s$}{Presión}
                     \begin{figure}[H!]
                         \includegraphics[width=0.9\textwidth]{./va_vs_time-n300}
                         \label{fig:va_4}
@@ -347,18 +344,56 @@
                         \hfill
                         \begin{minipage}[t]{0.45\textwidth}
                             \centering
-                            \small{$L=5$}
+                            \small{$E=20000$}
                         \end{minipage}
                     \end{beamercolorbox}
             \end{frame}
 
-            \begin{frame}{Parámetro de orden $v_a$}{$v_a$ en función del ruido ($\eta$)}
+            \begin{frame}{Presión vs Tiempo con $v \in \{ 3, 6, 10\}m/s$}{Presión}
+                \begin{minipage}[t]{0.3\textwidth}
+                    \begin{figure}[H!]
+                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
+                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
+                        \label{fig:p_vs_t_3ms}
+                    \end{figure}
+                    \begin{beamercolorbox}[sep=5pt,center]{block body}
+                        \centering
+                        \small{$v=3m/s$}
+                    \end{beamercolorbox}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[t]{0.30\textwidth}
+                    \begin{figure}[H!]
+                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
+                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
+                        \label{fig:p_vs_t_6ms}
+                    \end{figure}
+                    \begin{beamercolorbox}[sep=5pt,center]{block body}
+                        \centering
+                        \small{$v=6m/s$}
+                    \end{beamercolorbox}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[t]{0.30\textwidth}
+                    \begin{figure}[H!]
+                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
+                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
+                        \label{fig:p_vs_t_10ms}
+                    \end{figure}
+                    \begin{beamercolorbox}[sep=5pt,center]{block body}
+                        \centering
+                        \small{$v=10m/s$}
+                    \end{beamercolorbox}
+                \end{minipage}
+            \end{frame}
+
+            \begin{frame}{Presión vs Temperatura}{Presión}
                 \begin{figure}[H!]
                     \includegraphics[width=0.9\textwidth]{./va_vs_eta}
-                    \label{fig:va_5}
+                    \label{fig:p_vs_t}
                 \end{figure}
                 \begin{beamercolorbox}[sep=5pt,center]{block body}
-                    \small{$L=5$}
+                    \small{$E=20000$}
                 \end{beamercolorbox}
             \end{frame}
 
