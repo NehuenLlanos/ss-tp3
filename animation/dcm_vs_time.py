@@ -4,19 +4,19 @@ import os.path
 import numpy as np
 import matplotlib.ticker as ticker
 
-RUNS = 2
+RUNS = 6
 VEL = 1
-EVENT_COUNT = 4847
+EVENT_COUNT = 8000
 DELTA_T = 0.0015
 output_files = {}
 
-output_files[0] = open(os.path.dirname(__file__) + '/../output_1_1.txt')
-output_files[1] = open(os.path.dirname(__file__) + '/../output_1_2.txt')
-# output_files[2] = open(os.path.dirname(__file__) + '/../output_1ms_run3.txt')
-# output_files[3] = open(os.path.dirname(__file__) + '/../output_1ms_run4.txt')
-# output_files[4] = open(os.path.dirname(__file__) + '/../output_1ms_run5.txt')
-# output_files[5] = open(os.path.dirname(__file__) + '/../output_1ms_run6.txt')
-# output_files[6] = open(os.path.dirname(__file__) + '/../output_1ms_run7.txt')
+output_files[0] = open(os.path.dirname(__file__) + '/../output_1ms_run1.txt')
+output_files[1] = open(os.path.dirname(__file__) + '/../output_1ms_run2.txt')
+output_files[2] = open(os.path.dirname(__file__) + '/../output_1ms_run3.txt')
+output_files[3] = open(os.path.dirname(__file__) + '/../output_1ms_run4.txt')
+output_files[4] = open(os.path.dirname(__file__) + '/../output_1ms_run5.txt')
+output_files[5] = open(os.path.dirname(__file__) + '/../output_1ms_run6.txt')
+output_files[6] = open(os.path.dirname(__file__) + '/../output_1ms_run7.txt')
 # output_files[7] = open(os.path.dirname(__file__) + '/../output_1ms_run8.txt')
 # output_files[8] = open(os.path.dirname(__file__) + '/../output_1ms_run9.txt')
 # output_files[9] = open(os.path.dirname(__file__) + '/../output_1ms_run10.txt')
@@ -66,6 +66,7 @@ for i in range(RUNS):
     previous_index = 0
     displacements_normalized[i] = []
     displacements_normalized[i].append(displacements[i][0][0])
+    print(displacements[i][1][1])
     j = 1
     while displacements[i][j][1] < 0.15:
         current_index = int(displacements[i][j][1] // DELTA_T)
@@ -82,6 +83,13 @@ for i in range(100):
 for i in range(100):
     dcm[i] = np.average(dcm[i])
 
+sumX = np.sum(xs)
+sumY = np.sum(dcm)
+sumXSquared = np.sum([x**2 for x in xs])
+sumXY = np.sum([x*y for x, y in zip(xs, dcm)])
+slope = (100 * sumXY - sumX * sumY) / (100 * sumXSquared - sumX**2)
+
+ax.plot(xs, slope*xs, color="tab:blue", linewidth=2.0)
 ax.errorbar(xs, dcm, yerr=0, fmt='o', capsize=5)
 
 formatter = ticker.ScalarFormatter()
