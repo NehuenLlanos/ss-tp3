@@ -11,6 +11,10 @@
 \usepackage{algpseudocode}
 \usepackage{caption}
 \usepackage{courier}
+\usepackage{amsmath}
+
+\DeclareMathOperator{\atantwo}{atan2}
+
 
 \captionsetup{justification=centering, font={scriptsize}, skip=0pt}
 
@@ -167,56 +171,100 @@
                 \begin{itemize}
                     \item Parámetros de entrada fijos:
                     \begin{itemize}
-                        \item $r_c$: radio de interacción. \alert{Se considera $r_c=1$}
-                        \item $v$: módulo de la velocidad. \alert{Se considera $v=0.03$}
-                        \item $L$: longitud del plano. \alert{Se considera $L=5$}
+                        \item Número de partículas ($N$): \alert{$300$}
+                        \item Cantidad de eventos ($E$): \alert{$20.000$}
+                        \item Longitud del plano ($L$): \alert{$0.1(m)$}
+                        \item Radio de partículas ($r$): \alert{$0.001(m)$}
+                        \item Radio del obstáculo ($R$): \alert{$0.005(m)$}
+                        \item Masa de partículas ($m$): \alert{$1(kg)$}
+                        \item Masa del obstáculo ($m$): \alert{$3(kg)$}
                     \end{itemize}
                     \item Parámetros de entrada variables:
                     \begin{itemize}
-                        \item $N$: cantidad de partículas
-                        \item $\eta$: ruido
+                        \item Módulo de la velocidad ($v$): \alert{$\{1, 3, 6, 10\}(m/s)$}
                     \end{itemize}
                 \end{itemize}
             \end{frame}
 
         \subsection{Observables}
 
-            \begin{frame}{Parámetro de orden o polarización $v_a$}
+            \begin{frame}{Presión en paredes y obstáculo en función del tiempo ($P(t)$)}
                 \begin{itemize}
-                    \item Se define como:
+                    \item Presión en paredes en función del tiempo:
                     \begin{equation*}
-                        v_a = \frac{1}{Nv} \left|\sum_{i=1}^{N} \vec{v_i} \right|
+                        P_{Paredes}(t) = \frac{\sum \Delta V_{n\ (Paredes)}}{\Delta t \cdot L \cdot 4}
                     \end{equation*}
-                    \item Tiende a cero (0) cuando las partículas se encuentran en total desorden.
-                    \item Tiende a uno (1) cuando las partículas se encuentran polarizadas.
+                    \begin{equation*}
+                        V_{n\ (Paredes\ Sup.\ y\ Inf.)} = \left| v \cdot \sin(\alpha) \cdot 2 \right|
+                    \end{equation*}
+                    \begin{equation*}
+                        V_{n\ (Paredes\ Izq.\ y\ Der.)} = \left| v \cdot \cos(\alpha) \cdot 2 \right|
+                    \end{equation*}
+                    \item Presión en el obstáculo en función del tiempo:
+                    \begin{equation*}
+                        P_{Obst\acute{a}culo}(t) = \frac{\sum \vec{V_{n\ (Obst\acute{a}culo)}}}{\Delta t \cdot 2\pi \cdot R}
+                    \end{equation*}
+                    \begin{equation*}
+                              \vec{V_{n\ (Obst\acute{a}culo)}} = \left| {v \cdot \cos \left( \atantwo \left(\frac{L}{2} - y, \frac{L}{2} - x \right) \right) \cdot 2} \right|
+                    \end{equation*}
                 \end{itemize}
             \end{frame}
 
-            \begin{frame}{Tiempo en el que el nro. de visitas alcanza el 20\% de $N$ }
+            \begin{frame}{Tiempo en el que el nro. de choques alcanza el 20\% de $N$ }
                 \begin{itemize}
-                    \item Se define para las visitas en condiciones periódicas de contorno.
-                    \item Se estudia su variación dependiendo de $\eta$ (ruido).
-                    \item Como se tienen en cuenta cuatro $(4)$ zonas circulares fijas de visitas, es necesario promediar
-                    los tiempos obtenidos de cada una de ellas y su error asociado:
+                    \item Se realizan diez (10) corridas.
+                    \item Se estudia el tiempo en el que el 20\% de las partículas colisionan por primera vez con el obstáculo.
                     \begin{equation*}
-                        t_{\text{prom}} = \frac{1}{4} \sum_{i=1}^{4} t_i \ ,\ t_i\text{: tiempo en la zona }i
+                        t_{\text{prom}} = \frac{\sum_{i=1}^{10} t_i}{10} \ ,\ t_i\text{: tiempo en corrida }i
+                    \end{equation*}
+                    \begin{equation*}
+                              \sigma = \sqrt{\frac{1}{9} \sum_{i=1}^{10} (t_i - t_{\text{prom}})^2}
                     \end{equation*}
                 \end{itemize}
             \end{frame}
 
-            \begin{frame}{Número de visitas por unidad de tiempo}
+            \begin{frame}{Número de choques por unidad de tiempo}
                 \begin{itemize}
-                    \item Se define para las visitas en condiciones abiertas de contorno.
-                    \item Se estudia su variación dependiendo de $\eta$ (ruido).
-                    \item Se lo calcula como la pendiente de la curva de nro. de visitas en función del tiempo.
-                    Se aplica el método de regresión lineal simple:
+                    \item Se calcula la pendiente de la curva mediante el método de regresión lineal simple
                     \begin{equation*}
-                        m_k = \frac{N \sum_{i=1}^N x_i y_i - \sum_{i=1}^N x_i \sum_{i=1}^N y_i }{N \sum_{i=1}^N x_i^2 - \left(\sum_{i=1}^N x_i \right)^2}
-                        \ , 1 \leq k \leq 4
+                        \begin{split}
+                            m_k(\iota) = \frac{\iota \sum_{i=1}^\iota x_i y_i - \sum_{i=1}^\iota x_i \sum_{i=1}^\iota y_i }{\iota \sum_{i=1}^\iota x_i^2 - \left(\sum_{i=1}^\iota x_i \right)^2}
+                            \ , 1 \leq k \leq 10
+                            \\ \iota = \text{cantidad de choques en el intervalo de tiempo}
+                        \end{split}
                     \end{equation*}
-                    \item Se promedian los valores obtenidos de cada una de las zonas y se calcula su error asociado:
+                    \item Se promedian los valores obtenidos de cada una de las diez (10) corridas y se calcula su error asociado:
                     \begin{equation*}
-                        m_{prom}(N,\eta) = \frac{1}{4} \sum_{i=1}^{4} m_i
+                            m_{prom} = \frac{1}{10} \sum_{i=1}^{10} m_i
+                        \text{ ; }
+                            \sigma = \sqrt{\frac{1}{9} \sum_{i=1}^{10} (m_i - m_{\text{prom}})^2}
+                    \end{equation*}
+                \end{itemize}
+            \end{frame}
+
+            \begin{frame}{Desplazamiento cuadrático medio ($DCM$)}
+                \begin{itemize}
+                    \item Se realiza para cuatro (4) velocidades y diez (10) corridas cada una.
+                    \item Se divide el intervalo de tiempo en cien (100) $\Delta t's$.
+                    \item Se obtiene el desplazamiento cuadrático medio para cada $\Delta t$:
+                    \begin{equation*}
+                        DCM_{\Delta t} = \frac{\sum_{i=1}^{10} \left( x_{t_i} - x_0 \right)^2 + \left( y_{t_i} - y_0 \right)^2}{10}
+                    \end{equation*}
+
+                \end{itemize}
+            \end{frame}
+
+            \begin{frame}{Coeficiente de difusión ($D$)}
+                \begin{itemize}
+                    \item Se obtiene la pendiente de la curva de $DCM$ en función del tiempo mediante el método
+                    de regresión lineal simple para cada velocidad.
+                    \begin{equation*}
+                        m_v = \frac{100 \sum_{i=1}^{100} x_i y_i - \sum_{i=1}^{100} x_i \sum_{i=1}^{100} y_i }{100 \sum_{i=1}^{100} x_i^2
+                        - \left(\sum_{i=1}^{100} x_i \right)^2},\ v \in \{1, 3, 6, 10\}
+                    \end{equation*}
+                    \item Se obtiene el coeficiente de difusión:
+                    \begin{equation*}
+                        D_v = \frac{m_v}{4},\ v \in \{1, 3, 6, 10\}
                     \end{equation*}
                 \end{itemize}
             \end{frame}
