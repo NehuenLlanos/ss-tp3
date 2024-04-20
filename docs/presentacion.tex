@@ -20,6 +20,7 @@
 \usetheme[compress]{Berlin}
 \usecolortheme{wolverine}
 \setbeamertemplate{page number in head/foot}[framenumber]
+\setbeamercolor{institute in head/foot}{parent=palette primary}
 
 \title[Dinámica Molecular Dirigida por Eventos]{Dinámica Molecular de Esferas Rígidas: Simulaciones Dirigidas por eventos}
 \subtitle{72.25 - Simulación de Sistemas}
@@ -96,8 +97,8 @@
                 \begin{minipage}[t]{0.45\textwidth}
                     \begin{figure}[H]
                         \centering
-                        \includegraphics[width=\linewidth]{./bandadas_de_aves}
-                        \label{fig:bandadas_de_aves}
+                        \includegraphics[width=\linewidth]{./angrybirds}
+                        \label{fig:angry_birds}
                     \end{figure}
                 \end{minipage}
             \end{frame}
@@ -106,39 +107,27 @@
 
             \begin{frame}{Fundamentos}
                 \begin{itemize}
-                    \item El modelo de Bandadas de Agentes Autopropulsados se basa en dos ecuaciones principales:
+                    \item Las partículas son una 5-upla $(x, y, R, v_x, v_y)$
+                    \item Las partículas se mueven en linea recta hasta que ocurre una colisión:
                         \begin{equation*}
-                            x_i(t+1) = x_i(t) + v_i(t) \Delta t\label{eq:equation1}
+                            \vec{x_i}(t+1) = \vec{x_i}(t) + \vec{v_i}(t) t_c\ ; \ t_c = \text{tiempo mínimo de colisión}
                         \end{equation*}
+                    \item Se busca el tiempo en el que las partículas colisionan:
                         \begin{equation*}
-                            \theta(t+1) = \langle \theta(t) \rangle_r+ \Delta \theta\label{eq:equation2}
+                            \left( x_i - x_j \right) ^2 + \left( y_i - y_j \right) ^2 = \left( R_i + R_j \right) ^2
                         \end{equation*}
-                    \item El $\langle \theta(t) \rangle_r$ es el promedio de los ángulos de las partículas vecinas:
-                        \begin{equation*}
-                            \langle \theta(t) \rangle_r = atan2(\langle sin(\theta(t)) \rangle_r, \langle cos(\theta(t)) \rangle_r)
-                        \end{equation*}
+                    \item Las colisiones son elásticas y se conserva el impulso.
                 \end{itemize}
             \end{frame}
 
     \section{Implementación}
-
-        \begin{frame}{Implementación}
-            \begin{itemize}
-                \item El modelo computacional se realizó en Java y cuenta con tres clases principales:
-                \begin{itemize}
-                    \item \texttt{MovingParticle}: representa una partícula en el espacio.
-                    \item \texttt{OffLatticeAutomata}: representa el modelo de bandadas de agentes autopropulsados.
-                    \item \texttt{Main}: clase principal que ejecuta la simulación.
-                \end{itemize}
-            \end{itemize}
-        \end{frame}
 
         \subsection{Arquitectura}
 
             \begin{frame}{Diagrama UML}
                 \begin{figure}[htbp]
                     \centering
-                    \includegraphics[width=\textwidth]{./architecture-landscape}
+                    \includegraphics[width=\textwidth]{./architecture}
                     \label{fig:architecture}
                 \end{figure}
             \end{frame}
@@ -146,25 +135,28 @@
         \subsection{Algoritmo}
 
             \begin{frame}{Pseudocódigo del algoritmo implementado}{}
-%                {\fontfamily{consola}\selectfont
-                    \begin{algorithmic}[1]
-                        \ttfamily \footnotesize
-                        \State Create output file
-                        \While{$t < t_{max}$}
-                            \State neighbours $\gets$ \Call{CellIndexMethod()}{}
-                            \State list$_{\text{particle, angles}}$ $\gets$ \Call{Map}{neighbours}
-                            \Comment{En $t$}
-                            \ForAll{(particle, angles) $\in$ list}
-                                \State $\theta_{\text{new}} \gets$ \Call{NewAngle}{particle, angles}
-                                \State \Call{UpdateAngle}{particle, $\theta_{\text{new}}$}
-                                \State \Call{UpdateXPosition}{particle, $\theta_{\text{new}}$}
-                                \State \Call{UpdateYPosition}{particle, $\theta_{\text{new}}$}
-                                \State Write output for $t$
-                            \EndFor
-                            \State $t \gets t + 1$
-                        \EndWhile
-                    \end{algorithmic}
-%                }
+                \begin{algorithmic}[1]
+                    \ttfamily \scriptsize
+                    \State Create output file
+                    \State collisions $\gets$ new OrderedSet()
+                    \ForAll{p $\in$ particles}
+                        \State collisions $\gets$ \Call{CalculateCollisionsWithWalls}{p}
+                        \ForAll{q $\in$ particles}
+                            \State collisions $\gets$ \Call{CalculateCollisionsBetweenParticles}{p, q}
+                        \EndFor
+                    \EndFor
+                    \While{$i < eventCount$}
+                        \State first $\gets$ \Call{PopFirstCollision}{collisions}
+                        \ForAll{p $\in$ particles}
+                            \State \Call{Move}{p, first.time}
+                        \EndFor
+                        \State \Call{UpdateCollisionsTime}{first.time}
+                        \State \Call{WriteOutput}{particles}
+                        \State \Call{UpdateVelocities}{first.p1, first.p2}
+                        \State \Call{CalculateNewCollisions}{first}
+                        \State $i \gets i + 1$
+                    \EndWhile
+                \end{algorithmic}
             \end{frame}
 
     \section{Simulaciones}

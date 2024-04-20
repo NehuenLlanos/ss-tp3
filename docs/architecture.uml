@@ -1,0 +1,82 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+package tp1 {
+class Particle {
+    -String identifier
+    -double radius
+    -double x
+    -double y
+}
+
+class CellIndexMethod<T extends Particle> {
+    -double interactionRadius
+    -int matrixCellCount
+    -boolean periodicConditions
+
+    +Map<T, Set<T>> execute()
+    +Map<T, Set<T>> bruteForce()
+}
+
+Class Plane<T extends Particle> {
+    -double length
+    -List<T> particles
+}
+}
+
+package tp2 {
+class MovingParticle {
+    -double velocity
+    -double angle
+}
+}
+
+package tp3 {
+class Main {
+    -double calculateRandomAngle()
+    +void main(String[] args)
+}
+
+class EventDrivenDynamics {
+    -CellIndexMethod<HeavyMovingParticle> cim
+    -HeavyMovingParticle obstacle
+    -boolean obstacleMoves
+    -int eventCount
+    -double elapsedTime
+
+    -void writeResults()
+    +void execute()
+}
+
+class Collision {
+    -HeavyMovingParticle particle1
+    -HeavyMovingParticle particle2
+    -boolean withWall
+    -Wall wall
+    -dobule time
+
+    +Collision calculateWithWall(HeavyMovingParticle particle, Wall wall)
+    +Collision calculateWithParticle(HeavyMovingParticle p1, HeavyMovingParticle p2)
+}
+
+enum Wall {
+   +TOP
+   +BOTTOM
+   +LEFT
+   +RIGHT
+}
+
+class HeavyMovingParticle {
+    -double mass
+}
+}
+
+Particle <|-- MovingParticle 
+MovingParticle <|-- HeavyMovingParticle
+EventDrivenDynamics *-- CellIndexMethod
+EventDrivenDynamics *-- HeavyMovingParticle
+CellIndexMethod *-- Plane
+Plane *-- Particle
+Collision *-- HeavyMovingParticle
+Collision *-- Wall
+@enduml
