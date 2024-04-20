@@ -5,6 +5,7 @@ import ar.edu.itba.ss.cim.Plane;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -39,54 +40,67 @@ public class Main {
         final double obstacleVelocity = Double.parseDouble(data.get(9)); // v_0_obstacle
         final boolean obstacleMoves = Boolean.parseBoolean(data.get(10)); // obstacle_moves
 
-        Plane.Builder<HeavyMovingParticle> planeBuilder = Plane.Builder.newBuilder();
+        final List<AbstractMap.SimpleEntry<Double, Integer>> reps = new ArrayList<>();
+        final List<Double> velocities = List.of(1d, 3d, 6d, 10d);
+        for (double velocity : velocities) {
+            for (int k = 1; k <= 10; k++) {
+                reps.add(new AbstractMap.SimpleEntry<>(velocity, k));
+            }
+        }
 
-        HeavyMovingParticle obstacle = HeavyMovingParticle.Builder.newBuilder()
-                .withIdentifier("obstacle")
-                .withX(planeLength / 2)
-                .withY(planeLength / 2)
-                .withRadius(obstacleRadius)
-                .withMass(obstacleMass)
-                .withVelocity(obstacleVelocity)
-                .withAngle(0)
-                .build();
+        reps.parallelStream().forEach(rep -> {
+            Double velocity = rep.getKey();
+            Integer k = rep.getValue();
 
-        List<HeavyMovingParticle> particles = new ArrayList<>();
-        particles.add(obstacle);
-        for (int i = 0; i < particleCount; i++) {
-            HeavyMovingParticle particle = HeavyMovingParticle.Builder.newBuilder()
-                    .withIdentifier(String.format("p_%d", i))
-                    .withX(0)
-                    .withY(0)
-                    .withRadius(particleRadius)
-                    .withMass(particleMass)
-                    .withVelocity(particleVelocity)
-                    .withAngle(getRandomAngle())
+            Plane.Builder<HeavyMovingParticle> planeBuilder = Plane.Builder.newBuilder();
+
+            HeavyMovingParticle obstacle = HeavyMovingParticle.Builder.newBuilder()
+                    .withIdentifier("obstacle")
+                    .withX(planeLength / 2)
+                    .withY(planeLength / 2)
+                    .withRadius(obstacleRadius)
+                    .withMass(obstacleMass)
+                    .withVelocity(obstacleVelocity)
+                    .withAngle(0)
                     .build();
 
-            do {
-                particle.setX(Math.random() * (planeLength - 2 * particleRadius) + particleRadius);
-                particle.setY(Math.random() * (planeLength - 2 * particleRadius) + particleRadius);
-            } while (particles.stream().anyMatch(p -> p.distanceTo(particle, true) < 0));
+            List<HeavyMovingParticle> particles = new ArrayList<>();
+            particles.add(obstacle);
+            for (int i = 0; i < particleCount; i++) {
+                HeavyMovingParticle particle = HeavyMovingParticle.Builder.newBuilder()
+                        .withIdentifier(String.format("p_%d", i))
+                        .withX(0)
+                        .withY(0)
+                        .withRadius(particleRadius)
+                        .withMass(particleMass)
+                        .withVelocity(velocity)
+                        .withAngle(getRandomAngle())
+                        .build();
 
-            particles.add(particle);
-        }
-        planeBuilder = planeBuilder.withParticles(particles);
+                do {
+                    particle.setX(Math.random() * (planeLength - 2 * particleRadius) + particleRadius);
+                    particle.setY(Math.random() * (planeLength - 2 * particleRadius) + particleRadius);
+                } while (particles.stream().anyMatch(p -> p.distanceTo(particle, true) < 0));
 
-        CellIndexMethod.Builder<HeavyMovingParticle> cimBuilder = CellIndexMethod.Builder.newBuilder();
-        final CellIndexMethod<HeavyMovingParticle> cim = cimBuilder
-                .withInteractionRadius(interactionRadius)
-                .withOptimumMatrixCellCount()
-                .withPlane(planeBuilder.withLength(planeLength).build())
-                .build();
+                particles.add(particle);
+            }
+            planeBuilder = planeBuilder.withParticles(particles);
 
-        EventDrivenDynamics eventDrivenDynamics = EventDrivenDynamics.Builder.newBuilder()
-                .withCim(cim)
-                .withObstacle(obstacle)
-                .withMovingObstacle(obstacleMoves)
-                .withEventCount(eventCount)
-                .build();
+            CellIndexMethod.Builder<HeavyMovingParticle> cimBuilder = CellIndexMethod.Builder.newBuilder();
+            final CellIndexMethod<HeavyMovingParticle> cim = cimBuilder
+                    .withInteractionRadius(interactionRadius)
+                    .withOptimumMatrixCellCount()
+                    .withPlane(planeBuilder.withLength(planeLength).build())
+                    .build();
 
-        eventDrivenDynamics.execute("output.txt", "collisions.txt");
+            EventDrivenDynamics eventDrivenDynamics = EventDrivenDynamics.Builder.newBuilder()
+                    .withCim(cim)
+                    .withObstacle(obstacle)
+                    .withMovingObstacle(obstacleMoves)
+                    .withEventCount(eventCount)
+                    .build();
+
+            eventDrivenDynamics.execute(String.format("output_%.0f_%d.txt", velocity, k), String.format("collisions_%.0f_%d.txt", velocity, k));
+        });
     }
 }
