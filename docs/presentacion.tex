@@ -11,10 +11,8 @@
 \usepackage{algpseudocode}
 \usepackage{caption}
 \usepackage{courier}
-\usepackage{amsmath}
 
 \DeclareMathOperator{\atantwo}{atan2}
-
 
 \captionsetup{justification=centering, font={scriptsize}, skip=0pt}
 
@@ -26,7 +24,7 @@
 \setbeamertemplate{page number in head/foot}[framenumber]
 \setbeamercolor{institute in head/foot}{parent=palette primary}
 
-\title[Dinámica Molecular Dirigida por Eventos]{Dinámica Molecular de Esferas Rígidas: Simulaciones Dirigidas por eventos}
+\title[Dinámica Molecular Dirigida por Eventos]{Dinámica Molecular de Esferas Rígidas: Simulaciones Dirigidas por Eventos}
 \subtitle{72.25 - Simulación de Sistemas}
 \author[Flores Lucey, Llanos]{Alejo Flores Lucey\inst{1} \and Nehuén Gabriel Llanos\inst{2}}
 \institute[Instituto Tecnológico de Buenos Aires]
@@ -172,16 +170,16 @@
                     \item Parámetros de entrada fijos:
                     \begin{itemize}
                         \item Número de partículas ($N$): \alert{$300$}
-                        \item Cantidad de eventos ($E$): \alert{$20.000$}
-                        \item Longitud del plano ($L$): \alert{$0.1(m)$}
-                        \item Radio de partículas ($r$): \alert{$0.001(m)$}
-                        \item Radio del obstáculo ($R$): \alert{$0.005(m)$}
-                        \item Masa de partículas ($m$): \alert{$1(kg)$}
-                        \item Masa del obstáculo ($m$): \alert{$3(kg)$}
+                        \item Cantidad de eventos ($E$): \alert{$20\,000$}
+                        \item Longitud del plano ($L$): \alert{$0.1 m$}
+                        \item Radio de partículas ($r$): \alert{$0.001 m$}
+                        \item Radio del obstáculo ($R$): \alert{$0.005 m$}
+                        \item Masa de partículas ($m$): \alert{$1 kg$}
+                        \item Masa del obstáculo ($m$): \alert{$3 kg$}
                     \end{itemize}
                     \item Parámetros de entrada variables:
                     \begin{itemize}
-                        \item Módulo de la velocidad ($v$): \alert{$\{1, 3, 6, 10\}(m/s)$}
+                        \item Módulo de la velocidad inicial ($v_0$): \alert{$\{1, 3, 6, 10\} m/s)$}
                     \end{itemize}
                 \end{itemize}
             \end{frame}
@@ -195,17 +193,17 @@
                         P_{Paredes}(t) = \frac{\sum \Delta V_{n\ (Paredes)}}{\Delta t \cdot L \cdot 4}
                     \end{equation*}
                     \begin{equation*}
-                        V_{n\ (Paredes\ Sup.\ y\ Inf.)} = \left| v \cdot \sin(\alpha) \cdot 2 \right|
+                        v_{n\ (Paredes\ Sup.\ y\ Inf.)} = \left| v \cdot \sin(\alpha) \cdot 2 \right|
                     \end{equation*}
                     \begin{equation*}
-                        V_{n\ (Paredes\ Izq.\ y\ Der.)} = \left| v \cdot \cos(\alpha) \cdot 2 \right|
+                        v_{n\ (Paredes\ Izq.\ y\ Der.)} = \left| v \cdot \cos(\alpha) \cdot 2 \right|
                     \end{equation*}
                     \item Presión en el obstáculo en función del tiempo:
                     \begin{equation*}
-                        P_{Obst\acute{a}culo}(t) = \frac{\sum \vec{V_{n\ (Obst\acute{a}culo)}}}{\Delta t \cdot 2\pi \cdot R}
+                        P_{Obst\acute{a}culo}(t) = \frac{\sum \vec{v_{n\ (Obst\acute{a}culo)}}}{\Delta t \cdot 2\pi \cdot R}
                     \end{equation*}
                     \begin{equation*}
-                              \vec{V_{n\ (Obst\acute{a}culo)}} = \left| {v \cdot \cos \left( \atantwo \left(\frac{L}{2} - y, \frac{L}{2} - x \right) \right) \cdot 2} \right|
+                          \vec{v_{n\ (Obst\acute{a}culo)}} = \left| {v \cdot \cos \left( \atantwo \left(\frac{L}{2} - y, \frac{L}{2} - x \right) \right) \cdot 2} \right|
                     \end{equation*}
                 \end{itemize}
             \end{frame}
@@ -218,7 +216,7 @@
                         t_{\text{prom}} = \frac{\sum_{i=1}^{10} t_i}{10} \ ,\ t_i\text{: tiempo en corrida }i
                     \end{equation*}
                     \begin{equation*}
-                              \sigma = \sqrt{\frac{1}{9} \sum_{i=1}^{10} (t_i - t_{\text{prom}})^2}
+                        \sigma = \sqrt{\frac{1}{9} \sum_{i=1}^{10} (t_i - t_{\text{prom}})^2}
                     \end{equation*}
                 \end{itemize}
             \end{frame}
@@ -245,12 +243,11 @@
             \begin{frame}{Desplazamiento cuadrático medio ($DCM$)}
                 \begin{itemize}
                     \item Se realiza para cuatro (4) velocidades y diez (10) corridas cada una.
-                    \item Se divide el intervalo de tiempo en cien (100) $\Delta t's$.
+                    \item Se divide el intervalo de tiempo en cien (100) $\Delta t$.
                     \item Se obtiene el desplazamiento cuadrático medio para cada $\Delta t$:
                     \begin{equation*}
                         DCM_{\Delta t} = \frac{\sum_{i=1}^{10} \left( x_{t_i} - x_0 \right)^2 + \left( y_{t_i} - y_0 \right)^2}{10}
                     \end{equation*}
-
                 \end{itemize}
             \end{frame}
 
@@ -269,16 +266,15 @@
                 \end{itemize}
             \end{frame}
 
-
     \section{Resultados}
 
-        \subsection{Animaciones}
+        \subsection{Animación del sistema}
 
-            \begin{frame}{Sistema con $v=1m/s$}{Animación}
+            \begin{frame}{Sistema con $v_0=1m/s$}{Animación}
                 \begin{minipage}[t]{0.60\textwidth}
                     \begin{figure}[H!]
-                        \includegraphics[height=.65\textheight]{./animation-n300-eta0p6-frame}
-                        \caption*{Véase la animación completa en \url{https://youtu.be/q8ep24AgTzU}.}
+                        \includegraphics[height=.65\textheight]{./animation_obstacle_still_v_1}
+                        \caption*{Véase la animación completa en \url{https://youtu.be/6y7aywkQ5ro}.}
                         \label{fig:a_1}
                     \end{figure}
                 \end{minipage}
@@ -287,144 +283,82 @@
                     \begin{block}{Datos del sistema}
                         \begin{itemize}
                             \item $N=300$
-                            \item $E=20.000$
+                            \item $E=20\,000$
+                            \item $v_0 = 1 m/s$
                         \end{itemize}
                     \end{block}
                 \end{minipage}
             \end{frame}
 
-            \begin{frame}{Sistema con $v \in \{ 3, 6, 10\}m/s$}{Animación}
+            \begin{frame}{Sistema con $v_0 \in \{ 3, 6, 10\}m/s$}{Animación}
                 \begin{minipage}[t]{0.3\textwidth}
                     \begin{figure}[H!]
-                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
-                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
+                        \includegraphics[width=\textwidth]{./animation_obstacle_still_v_3}
+                        \caption*{Véase la animación completa en \url{https://youtu.be/e0YvqmfTLc4}.}
+                        \label{fig:a_2}
+                    \end{figure}
+                    \begin{beamercolorbox}[sep=5pt,center]{block body}
+                        \centering
+                        \small{$v_0=3m/s$}
+                    \end{beamercolorbox}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[t]{0.30\textwidth}
+                    \begin{figure}[H!]
+                        \includegraphics[width=\textwidth]{./animation_obstacle_still_v_6}
+                        \caption*{Véase la animación completa en \url{https://youtu.be/DVVqFmP-cuQ}.}
                         \label{fig:a_3}
                     \end{figure}
                     \begin{beamercolorbox}[sep=5pt,center]{block body}
                         \centering
-                        \small{$v=3m/s$}
+                        \small{$v_0=6m/s$}
                     \end{beamercolorbox}
                 \end{minipage}
                 \hfill
                 \begin{minipage}[t]{0.30\textwidth}
                     \begin{figure}[H!]
-                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
-                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
-                        \label{fig:a_6}
+                        \includegraphics[width=\textwidth]{./animation_obstacle_still_v_10}
+                        \caption*{Véase la animación completa en \url{https://youtu.be/8M5MV5kRghI}.}
+                        \label{fig:a_4}
                     \end{figure}
                     \begin{beamercolorbox}[sep=5pt,center]{block body}
                         \centering
-                        \small{$v=6m/s$}
-                    \end{beamercolorbox}
-                \end{minipage}
-                \hfill
-                \begin{minipage}[t]{0.30\textwidth}
-                    \begin{figure}[H!]
-                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
-                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
-                        \label{fig:a_10}
-                    \end{figure}
-                    \begin{beamercolorbox}[sep=5pt,center]{block body}
-                        \centering
-                        \small{$v=10m/s$}
+                        \small{$v_0=10m/s$}
                     \end{beamercolorbox}
                 \end{minipage}
             \end{frame}
 
-            \begin{frame}{Presión vs Tiempo con $v=1m/s$}{Presión}
+        \subsection{Presión en paredes y obstáculo}
+
+            \begin{frame}{Presión vs Tiempo con $v_0=1m/s$}{Observable: Presión}
                     \begin{figure}[H!]
-                        \includegraphics[width=0.9\textwidth]{./va_vs_time-n300}
-                        \label{fig:va_4}
+                        \includegraphics[width=0.9\textwidth]{./pressure_vs_time_1}
+                        \label{fig:p_1}
                     \end{figure}
                     \begin{beamercolorbox}[sep=5pt,center]{block body}
-                        \begin{minipage}[t]{0.45\textwidth}
+                        \begin{minipage}[t]{0.3\textwidth}
                             \centering
                             \small{$N=300$}
                         \end{minipage}
                         \hfill
-                        \begin{minipage}[t]{0.45\textwidth}
+                        \begin{minipage}[t]{0.3\textwidth}
                             \centering
-                            \small{$E=20000$}
+                            \small{$E=20\,000$}
+                        \end{minipage}
+                        \hfill
+                        \begin{minipage}[t]{0.3\textwidth}
+                            \centering
+                            \small{$v_0 = 1 m/s$}
                         \end{minipage}
                     \end{beamercolorbox}
             \end{frame}
 
-            \begin{frame}{Presión vs Tiempo con $v \in \{ 3, 6, 10\}m/s$}{Presión}
-                \begin{minipage}[t]{0.3\textwidth}
-                    \begin{figure}[H!]
-                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
-                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
-                        \label{fig:p_vs_t_3ms}
-                    \end{figure}
-                    \begin{beamercolorbox}[sep=5pt,center]{block body}
-                        \centering
-                        \small{$v=3m/s$}
-                    \end{beamercolorbox}
-                \end{minipage}
-                \hfill
-                \begin{minipage}[t]{0.30\textwidth}
-                    \begin{figure}[H!]
-                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
-                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
-                        \label{fig:p_vs_t_6ms}
-                    \end{figure}
-                    \begin{beamercolorbox}[sep=5pt,center]{block body}
-                        \centering
-                        \small{$v=6m/s$}
-                    \end{beamercolorbox}
-                \end{minipage}
-                \hfill
-                \begin{minipage}[t]{0.30\textwidth}
-                    \begin{figure}[H!]
-                        \includegraphics[height=.65\textheight]{./animation-n300-eta2p4-frame}
-                        \caption*{Véase la animación completa en \url{https://youtu.be/aZ9eOtlXgQw}.}
-                        \label{fig:p_vs_t_10ms}
-                    \end{figure}
-                    \begin{beamercolorbox}[sep=5pt,center]{block body}
-                        \centering
-                        \small{$v=10m/s$}
-                    \end{beamercolorbox}
-                \end{minipage}
-            \end{frame}
-
-            \begin{frame}{Presión vs Temperatura}{Presión}
+            \begin{frame}{Presión vs Temperatura}{Observable: Presión}
                 \begin{figure}[H!]
-                    \includegraphics[width=0.9\textwidth]{./va_vs_eta}
+                    \includegraphics[width=0.9\textwidth]{./pressure_vs_temperature}
                     \label{fig:p_vs_t}
                 \end{figure}
                 \begin{beamercolorbox}[sep=5pt,center]{block body}
-                    \small{$E=20000$}
-                \end{beamercolorbox}
-            \end{frame}
-
-        \subsection{Tiempo en el que el nro. de visitas alcanza el 20\% de $N$}
-
-            \begin{frame}{Tiempo en el que el nro. de visitas alcanza el 20\% de $N$}{Animación}
-                \begin{minipage}[t]{0.60\textwidth}
-                    \begin{figure}[H!]
-                        \includegraphics[height=.65\textheight]{animation_visits_pbc-n300-eta0p6-frame}
-                        \caption*{Véase la animación completa en \url{https://youtu.be/MGHMlVLz0Ys}.}
-                        \label{fig:pbc_1}
-                    \end{figure}
-                \end{minipage}
-                \hfill
-                \begin{minipage}[t]{0.30\textwidth}
-                    \begin{block}{Datos del sistema}
-                        \begin{itemize}
-                            \item $N=300$
-                            \item $L=5$
-                            \item $\eta=0.6$
-                        \end{itemize}
-                    \end{block}
-                \end{minipage}
-            \end{frame}
-
-            \begin{frame}{Tiempo en el que el nro. de visitas alcanza el 20\% de $N$}{Cantidad total de visitas en función del tiempo}
-                \begin{figure}[H!]
-                    \includegraphics[width=0.9\textwidth]{./visits_vs_time_pbc-n300-eta0p6}
-                    \label{fig:pbc_2}
-                \end{figure}
-                \begin{beamercolorbox}[sep=5pt,center]{block body}
                     \begin{minipage}[t]{0.3\textwidth}
                         \centering
                         \small{$N=300$}
@@ -432,52 +366,17 @@
                     \hfill
                     \begin{minipage}[t]{0.3\textwidth}
                         \centering
-                        \small{$L=5$}
-                    \end{minipage}
-                    \hfill
-                    \begin{minipage}[t]{0.3\textwidth}
-                        \centering
-                        \small{$\eta=0.6$}
+                        \small{$E=20\,000$}
                     \end{minipage}
                 \end{beamercolorbox}
             \end{frame}
 
-            \begin{frame}{Tiempo en el que el nro. de visitas alcanza el 20\% de $N$}{Observable en función del ruido ($\eta$)}
+        \subsection{Tiempo en el que el 20\% de las partículas colisionan con el obstáculo}
+
+            \begin{frame}{Número de Colisiones vs Tiempo}{Observable: Tiempo en el que el 20\% de las partículas colisionan con el obstáculo}
                 \begin{figure}[H!]
-                    \includegraphics[width=0.9\textwidth]{./threshold_vs_eta-pbc}
-                    \label{fig:pbc_3}
-                \end{figure}
-                \begin{beamercolorbox}[sep=5pt,center]{block body}
-                    \small{$L=5$}
-                \end{beamercolorbox}
-            \end{frame}
-
-        \subsection{Nro. de visitas por unidad de tiempo}
-
-            \begin{frame}{Nro. de visitas por unidad de tiempo}{Animación}
-                \begin{minipage}[t]{0.60\textwidth}
-                    \begin{figure}[H!]
-                        \includegraphics[height=.65\textheight]{./animation_visits_obc-n300-eta0p6-frame}
-                        \caption*{Véase la animación completa en \url{https://youtu.be/ZcCPUwjMHBc}.}
-                        \label{fig:obc_1}
-                    \end{figure}
-                \end{minipage}
-                \hfill
-                \begin{minipage}[t]{0.30\textwidth}
-                    \begin{block}{Datos del sistema}
-                        \begin{itemize}
-                            \item $N=300$
-                            \item $L=5$
-                            \item $\eta=0.6$
-                        \end{itemize}
-                    \end{block}
-                \end{minipage}
-            \end{frame}
-
-            \begin{frame}{Nro. de visitas por unidad de tiempo}{Cantidad total de visitas en función del tiempo}
-                \begin{figure}[H!]
-                    \includegraphics[width=0.9\textwidth]{./visits_vs_time_obc-n300}
-                    \label{fig:obc_2}
+                    \includegraphics[width=0.9\textwidth]{./unique_collisions_vs_time}
+                    \label{fig:threshold_1}
                 \end{figure}
                 \begin{beamercolorbox}[sep=5pt,center]{block body}
                     \begin{minipage}[t]{0.45\textwidth}
@@ -487,39 +386,203 @@
                     \hfill
                     \begin{minipage}[t]{0.45\textwidth}
                         \centering
-                        \small{$L=5$}
+                        \small{$E=20\,000$}
                     \end{minipage}
                 \end{beamercolorbox}
             \end{frame}
 
-            \begin{frame}{Nro. de visitas por unidad de tiempo}{Observable en función del ruido ($\eta$)}
+            \begin{frame}{Observable vs Temperatura}{Observable: Tiempo en el que el 20\% de las partículas colisionan con el obstáculo}
                 \begin{figure}[H!]
-                    \includegraphics[width=0.9\textwidth]{./slope_vs_eta-obc}
-                    \label{fig:obc_3}
+                    \includegraphics[width=0.9\textwidth]{./threshold_vs_temperature}
+                    \label{fig:threshold_2}
                 \end{figure}
                 \begin{beamercolorbox}[sep=5pt,center]{block body}
-                    \small{$L=5$}
+                    \begin{minipage}[t]{0.45\textwidth}
+                        \centering
+                        \small{$N=300$}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.45\textwidth}
+                        \centering
+                        \small{$E=20\,000$}
+                    \end{minipage}
+                \end{beamercolorbox}
+            \end{frame}
+
+        \subsection{Nro. de colisiones con el obstáculo por unidad de tiempo}
+
+            \begin{frame}{Número de Colisiones vs Tiempo}{Observable: Nro. de colisiones con el obstáculo por unidad de tiemp}
+                \begin{figure}[H!]
+                    \includegraphics[width=0.9\textwidth]{./total_collisions_vs_time}
+                    \label{fig:slope_1}
+                \end{figure}
+                \begin{beamercolorbox}[sep=5pt,center]{block body}
+                    \begin{minipage}[t]{0.45\textwidth}
+                        \centering
+                        \small{$N=300$}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.45\textwidth}
+                        \centering
+                        \small{$E=20\,000$}
+                    \end{minipage}
+                \end{beamercolorbox}
+            \end{frame}
+
+            \begin{frame}{Observable vs Temperatura}{Observable: Nro. de colisiones con el obstáculo por unidad de tiemp}
+                \begin{figure}[H!]
+                    \includegraphics[width=0.9\textwidth]{./slope_vs_temperature}
+                    \label{fig:slope_2}
+                \end{figure}
+                \begin{beamercolorbox}[sep=5pt,center]{block body}
+                    \begin{minipage}[t]{0.45\textwidth}
+                        \centering
+                        \small{$N=300$}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.45\textwidth}
+                        \centering
+                        \small{$E=20\,000$}
+                    \end{minipage}
+                \end{beamercolorbox}
+            \end{frame}
+
+        \subsection{Desplazamiento Cuadrático Medio}
+
+            \begin{frame}{Sistema con $v_0=1m/s$ y obstáculo en movimiento}{Animación}
+                \begin{minipage}[t]{0.60\textwidth}
+                    \begin{figure}[H!]
+                        \includegraphics[height=.65\textheight]{./animation_obstacle_moves_v_1}
+                        \caption*{Véase la animación completa en \url{https://youtu.be/ZB0ikr5PKak}.}
+                        \label{fig:a_5}
+                    \end{figure}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[t]{0.30\textwidth}
+                    \begin{block}{Datos del sistema}
+                        \begin{itemize}
+                            \item $N=300$
+                            \item $E=20\,000$
+                            \item Partículas:
+                            \begin{itemize}
+                                \item $v_0 = 1 m/s$
+                            \end{itemize}
+                            \item Obstáculo:
+                            \begin{itemize}
+                                \item $v_0 = 0 m/s$
+                            \end{itemize}
+                        \end{itemize}
+                    \end{block}
+                \end{minipage}
+            \end{frame}
+
+            \begin{frame}{Desplazamiento Cuadrático vs Tiempo}{Observable: Desplazamiento Cuadrático Medio}
+                \begin{figure}[H!]
+                    \includegraphics[width=0.9\textwidth]{./dc_vs_time_1}
+                    \label{fig:dcm_1}
+                \end{figure}
+                \begin{beamercolorbox}[sep=5pt,center]{block body}
+                    \begin{minipage}[t]{0.24\textwidth}
+                        \centering
+                        \small{$N=300$}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.24\textwidth}
+                        \centering
+                        \small{$E=20\,000$}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.24\textwidth}
+                        \centering
+                        \small{$v_0 = 1 m/s$}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.24\textwidth}
+                        \centering
+                        \small{$\#Corridas = 10$}
+                    \end{minipage}
+                \end{beamercolorbox}
+            \end{frame}
+
+            \begin{frame}{Desplazamiento Cuadrático Medio vs Tiempo}{Observable: Desplazamiento Cuadrático Medio}
+                \begin{figure}[H!]
+                    \includegraphics[width=0.9\textwidth]{./dcm_vs_time}
+                    \label{fig:dcm_2}
+                \end{figure}
+                \begin{beamercolorbox}[sep=5pt,center]{block body}
+                    \begin{minipage}[t]{0.3\textwidth}
+                        \centering
+                        \small{$N=300$}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.3\textwidth}
+                        \centering
+                        \small{$E=20\,000$}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.3\textwidth}
+                        \centering
+                        \small{$\#Corridas = 10$}
+                    \end{minipage}
+                \end{beamercolorbox}
+            \end{frame}
+
+            \begin{frame}{Coeficiente de Difusión vs Temperatura}{Observable: Coeficiente de Difusión}
+                \begin{figure}[H!]
+                    \includegraphics[width=0.9\textwidth]{./coefficient_diffusion_vs_temperature}
+                    \label{fig:dcm_3}
+                \end{figure}
+                \begin{beamercolorbox}[sep=5pt,center]{block body}
+                    \begin{minipage}[t]{0.3\textwidth}
+                        \centering
+                        \small{$N=300$}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.3\textwidth}
+                        \centering
+                        \small{$E=20\,000$}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.3\textwidth}
+                        \centering
+                        \small{$\#Corridas = 10$}
+                    \end{minipage}
                 \end{beamercolorbox}
             \end{frame}
 
     \section{Conclusiones}
 
         \begin{frame}{Conclusiones}
-            \begin{itemize}
-                \item Se observó que a medida que aumenta la cantidad de partículas, la polarización tiende a ser
-                levemente mayor.
-                \item En las visitas PBC se puede notar que:
+            \begin{block}{Presión del sistema}
                 \begin{itemize}
-                    \item a medida que el ruido se incrementa, el tiempo en el que el número de visitas alcanza un
-                    porcentaje de $N$ también aumenta.
-                    \item para valores de baja cantidad de partículas y/o alto ruido, no se alcanza ese umbral.
+                    \item Aumenta linealmente con la temperatura.
+                    \item \textbf{Se comporta como un gas ideal.}
+                    \item Se mantiene constante en el tiempo.
+                    \item La presión en el obstáculo es igual que en las paredes.
                 \end{itemize}
-                \item En las visitas OBC se puede contemplar que:
+            \end{block}
+            \begin{block}{Tiempo en el que el 20\% de las partículas colisionan con el obstáculo}
                 \begin{itemize}
-                    \item la cantidad de visitas por unidad de tiempo disminuye a medida que el ruido aumenta, sin importar el $N$.
-                    \item para valores altos de $\eta$, la cantidad de partículas que visitan las zonas es acotada.
+                    \item Disminuye exponencialmente con la temperatura.
+                    \item Se debe a la mayor energía cinética de las partículas.
                 \end{itemize}
-            \end{itemize}
+            \end{block}
+        \end{frame}
+
+        \begin{frame}{Conclusiones}
+            \begin{block}{Número de colisiones con el obstáculo por unidad de tiempo}
+                \begin{itemize}
+                    \item Aumenta logarítmicamente con la temperatura.
+                \end{itemize}
+            \end{block}
+            \begin{block}{Desplazamiento Cuadrático Medio}
+                \begin{itemize}
+                    \item Se llega más rápido al estacionario con mayor temperatura.
+                    \item El coeficiente de difusión aumenta con la temperatura.
+                    \item El coeficiente de difusión alcanza un valor estacionario.
+                    \item \textbf{Se comporta como los elementos de la naturaleza.}
+                \end{itemize}
+            \end{block}
         \end{frame}
 
 \end{document}
