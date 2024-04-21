@@ -19,10 +19,17 @@ with (open(os.path.dirname(__file__) + '/../output_1_1.txt') as output_file,
     for i in range(time_count):
         times.append(data[i * particle_count:(i + 1) * particle_count])
 
+    print("Finished reading data")
+
     fig, ax = plt.subplots()
 
     def update(i):
+        if i % 1000 == 0:
+            print(f"{i} / {time_count}")
+
         ax.clear()
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
         ax.set_xlim(0, plane_length)
         ax.set_ylim(0, plane_length)
         ax.set_aspect('equal', adjustable='box')
@@ -38,9 +45,12 @@ with (open(os.path.dirname(__file__) + '/../output_1_1.txt') as output_file,
             # ax.annotate(f"{particle_data[1]} - {particle_data[0]}", (float(particle_data[2]), float(particle_data[3])))
         return ax
 
+    print("Starting animation")
     # Create the animation
-    ani = FuncAnimation(fig, update, frames=time_count, blit=False, interval=50)
+    ani = FuncAnimation(fig, update, frames=time_count, blit=False, interval=10)
+
     # Display the animation
     # plt.show()
+    print("Starting saving process")
     # Save the animation
     ani.save("../animation.mp4", writer=FFMpegWriter(fps=30))
