@@ -1,4 +1,4 @@
-# Evemt Driven Simulation: Molecular Dynamics of Hard Spheres
+# Event Driven Simulation: Molecular Dynamics of Hard Spheres
 
 ## Introduction
 
